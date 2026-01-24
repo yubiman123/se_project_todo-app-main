@@ -1,15 +1,23 @@
 class Todo {
-  constructor(data, selector) {
+  constructor(data, selector, handleDelete, handleToggle) {
     this._data = data;
     this._templateElement = document.querySelector(selector);
     this._todoElement = null;
     this._todoCheckboxEl = null;
     this._todoLabel = null;
+    this._handleDelete = handleDelete;
+    this._handleToggle = handleToggle;
   }
 
   _setEventListeners() {
     this._todoCheckboxEl.addEventListener("change", () => {
       this._data.completed = !this._data.completed;
+      this._handleToggle();
+    });
+
+    const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
+    todoDeleteBtn.addEventListener("click", () => {
+      this._handleDelete(this._data.id);
     });
   }
 
@@ -32,6 +40,9 @@ class Todo {
     const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
     todoNameEl.textContent = this._data.name;
+    if (this._data.date) {
+      todoDate.textContent = this._data.date.toLocaleDateString();
+    }
 
     this._generateCheckboxEl();
     this._setEventListeners();
