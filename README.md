@@ -4,32 +4,32 @@ a lightweight web app to help you keep track of your tasks. You can add new to-d
 
 features
 
-view a list of initial tasks rendered dynamically with JavaScript.
+- view a list of initial tasks rendered dynamically with JavaScript.
 
-open a modal form to add new tasks easily.
+- open a modal form to add new tasks easily.
 
-add tasks by pressing Enter or clicking the submit button.
+- add tasks by pressing Enter or clicking the submit button.
 
-mark tasks as completed or undo them by toggling the checkbox.
+- mark tasks as completed or undo them by toggling the checkbox.
 
-delete tasks with a single click.
+- delete tasks with a single click.
 
-each task has a unique ID to keep everything organized.
+- each task has a unique ID to keep everything organized.
 
-built-in form validation to make sure your input is correct.
+- built-in form validation to make sure your input is correct.
 
-tech Stack
+- tech Stack
 
-HTML5 – for the structure of the app
+- HTML5 – for the structure of the app
 
-CSS3 (BEM methodology) – for clean, organized styling
+- CSS3 (BEM methodology) – for clean, organized styling
 
-vanilla JavaScript (ES6) – for all the functionality
+- vanilla JavaScript (ES6) – for all the functionality
 
-object-Oriented JS – using ES6 classes for the Todo and FormValidator components
+- object-Oriented JS – using ES6 classes for the Todo and FormValidator components
 
-try it Out
+- try it Out
 
-check out the live app on GitHub Pages:
+- check out the live app on GitHub Pages:
 
-live Demo
+- live Demo
