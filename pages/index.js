@@ -49,6 +49,18 @@ const closeModal = (modal) => {
   document.removeEventListener("keydown", handleEscape);
 };
 
+// Helper to toggle a button state based on inputs and config
+const toggleButtonState = (inputList, buttonElement, config) => {
+  const hasInvalid = inputList.some((input) => !input.validity.valid);
+  if (hasInvalid) {
+    buttonElement.classList.add(config.inactiveButtonClass);
+    buttonElement.disabled = true;
+  } else {
+    buttonElement.classList.remove(config.inactiveButtonClass);
+    buttonElement.disabled = false;
+  }
+};
+
 /* ---------- Todo creation ---------- */
 const generateTodo = (data, onDelete, onToggle) => {
   const todo = new Todo(data, "#todo-template", onDelete, onToggle);
@@ -82,9 +94,20 @@ addTodoForm.addEventListener("submit", (evt) => {
 
   renderTodo({ name, date, id, completed: false });
 
-  closeModal(addTodoPopup);
+  // Reset form inputs and validation state before closing modal
   addTodoForm.reset();
   newTodoValidator.resetValidation();
+
+  const inputList = Array.from(
+    addTodoForm.querySelectorAll(validationConfig.inputSelector)
+  );
+  const buttonElement = addTodoForm.querySelector(
+    validationConfig.submitButtonSelector
+  );
+
+  toggleButtonState(inputList, buttonElement, validationConfig);
+
+  closeModal(addTodoPopup);
   updateCounter();
 });
 
