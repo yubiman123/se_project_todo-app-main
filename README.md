@@ -1,50 +1,52 @@
-a lightweight web app to help you keep track of your tasks. You can add new to-dos (with optional due dates), mark them as done, or remove them when they're no longer needed.
+A simple, interactive to‑do application built with modular JavaScript, BEM‑structured CSS, and reusable UI components. Users can create, complete, and delete tasks, with all interface behavior handled through ES6 classes.
 
-## Simple Todo App
+Features:
+Renders an initial list of to‑dos using javascript
 
-### Project Description
+Add new tasks via popup form or by pressing Enter
 
-A lightweight web app to help you keep track of your tasks. You can add new to-dos (with optional due dates), mark them as done, or remove them when they're no longer needed.
+Mark tasks as completed/uncompleted
 
-### Features
+Delete tasks
 
-- View a list of initial tasks rendered dynamically with JavaScript.
-- Open a modal form to add new tasks easily.
-- Add tasks by pressing Enter or clicking the submit button.
-- Mark tasks as completed or undo them by toggling the checkbox.
-- Delete tasks with a single click.
-- Each task has a unique ID to keep everything organized.
-- Built-in form validation to make sure your input is correct.
+Unique IDs generated with uuid
 
-### Technologies and Techniques Used
+Accessible UI with proper labels, alt text, and hover states
 
-- **HTML5** – for the structure of the app
-- **CSS3** (BEM methodology) – for clean, organized styling
-- **Vanilla JavaScript (ES6)** – for all the functionality
-- **Object-Oriented JS** – using ES6 classes for the Todo, FormValidator, Section, Popup, PopupWithForms, and TodoCounter components
+Popup closes on overlay click or Escape key
 
-### Screenshots
+Task counter updates automatically
 
-<!-- Add screenshots or GIFs here to showcase your app's features -->
+Tech & Structure
+Technologies used:
 
-### Live Demo
+HTML5, CSS3, BEM
 
-Check out the live app on GitHub Pages:
-[GitHub Pages Link](#) <!-- Replace # with your actual GitHub Pages URL -->
+Vanilla JavaScript (ES6 classes, modules)
 
-### Project Structure
+Prettier for formatting
 
-- `blocks/` – BEM blocks stored in separate CSS files
-- `components/` – Contains Todo.js, FormValidator.js, Section.js, PopupWithForms.js, and TodoCounter.js
-- `images/` – All images used in the project
-- `pages/` – Contains index.css and index.js
-- `utils/` – Contains constants.js
-- `vendor/` – Contains normalize.css, Popup.js, fonts.css, and a fonts directory
-- `index.html` – Main HTML file
-- `README.md` – Project documentation
-- `.prettierignore` – Prettier ignore rules
-- `.gitignore` – Git ignore rules
+normalize.css for consistent styling
 
----
+Project structure:
 
-No questions for reviewers. All requirements from previous iterations have been addressed.
+blocks/ — BEM block styles
+
+components/ — Todo, FormValidator, Section, PopupWithForm, TodoCounter
+
+utils/constants.js
+
+vendor/ — normalize.css, Popup.js, fonts.css, fonts/
+
+pages/index.css
+
+images/
+
+index.html
+
+.prettierignore, .gitignore
+
+README.md
+
+GitHub Pages
+https://github.com/yubiman123
