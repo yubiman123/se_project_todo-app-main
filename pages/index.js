@@ -2,34 +2,31 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import Section from "../components/Section.js";
+import TodoCounter from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseButton = addTodoPopup.querySelector(".popup__close");
-const todosList = document.querySelector(".todos__list");
-const counterText = document.querySelector(".counter__text");
+const addTodoPopupSelector = "#add-todo-popup";
+const addTodoForm = document.querySelector("#add-todo-popup .popup__form");
+const todosListSelector = ".todos__list";
+const counterSelector = ".counter__text";
 
 /* ---------- Counter ---------- */
-const updateCounter = () => {
-  const allTodos = todosList.querySelectorAll(".todo");
-  const completedTodos = todosList.querySelectorAll(
-    ".todo__completed:checked"
-  );
-  counterText.textContent = `Showing ${completedTodos.length} out of ${allTodos.length} completed`;
-};
+const todoCounter = new TodoCounter(counterSelector, initialTodos);
 
 /* ---------- Handlers ---------- */
-const handleDelete = (id) => {
-  const todoElement = document
-    .querySelector(`#todo-${id}`)
-    .closest(".todo");
+const handleDelete = (id, wasCompleted) => {
+  const todoElement = document.querySelector(`#todo-${id}`).closest(".todo");
   todoElement.remove();
-  updateCounter();
+  todoCounter.updateTotal(false);
+  if (wasCompleted) {
+    todoCounter.updateCompleted(false);
+  }
 };
 
-const handleToggle = () => {
-  updateCounter();
+const handleToggle = (isCompleted) => {
+  todoCounter.updateCompleted(isCompleted);
 };
 
 /* ---------- Modal helpers ---------- */
@@ -62,61 +59,55 @@ const toggleButtonState = (inputList, buttonElement, config) => {
 };
 
 /* ---------- Todo creation ---------- */
-const generateTodo = (data, onDelete, onToggle) => {
-  const todo = new Todo(data, "#todo-template", onDelete, onToggle);
-  return todo.getView();
-};
-
-const renderTodo = (item) => {
-  const todoElement = generateTodo(item, handleDelete, handleToggle);
-  todosList.append(todoElement);
-};
+const section = new Section({
+  items: initialTodos,
+  renderer: (item) => {
+    const todo = new Todo(
+      item,
+      "#todo-template",
+      (id) => handleDelete(id, item.completed),
+      (isChecked) => handleToggle(isChecked),
+    );
+    section.addItem(todo.getView());
+  },
+  containerSelector: todosListSelector,
+});
 
 /* ---------- Events ---------- */
-addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
-});
 
-addTodoCloseButton.addEventListener("click", () => {
-  closeModal(addTodoPopup);
-});
-
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
-
-  const date = new Date(dateInput);
-  date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-
+const popupWithForm = new PopupWithForm(addTodoPopupSelector, (inputValues) => {
+  const name = inputValues.name;
+  const dateInput = inputValues.date;
+  let date = null;
+  if (dateInput && dateInput.trim()) {
+    const d = new Date(dateInput);
+    if (!isNaN(d)) {
+      d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+      date = d;
+    }
+  }
   const id = uuidv4();
-
-  renderTodo({ name, date, id, completed: false });
-
-  // Reset form inputs and validation state before closing modal
+  const todoData = { name, date, id, completed: false };
+  const todo = new Todo(
+    todoData,
+    "#todo-template",
+    (id) => handleDelete(id, false),
+    (isChecked) => handleToggle(isChecked),
+  );
+  section.addItem(todo.getView());
+  todoCounter.updateTotal(true);
   addTodoForm.reset();
   newTodoValidator.resetValidation();
+  popupWithForm.close();
+});
+popupWithForm.setEventListeners();
 
-  const inputList = Array.from(
-    addTodoForm.querySelectorAll(validationConfig.inputSelector)
-  );
-  const buttonElement = addTodoForm.querySelector(
-    validationConfig.submitButtonSelector
-  );
-
-  toggleButtonState(inputList, buttonElement, validationConfig);
-
-  closeModal(addTodoPopup);
-  updateCounter();
+addTodoButton.addEventListener("click", () => {
+  popupWithForm.open();
 });
 
 /* ---------- Init ---------- */
-initialTodos.forEach(renderTodo);
-updateCounter();
+section.renderItems();
 
-const newTodoValidator = new FormValidator(
-  validationConfig,
-  addTodoForm
-);
+const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();

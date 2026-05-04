@@ -37,11 +37,13 @@ class Todo {
 
     const todoNameEl = this._todoElement.querySelector(".todo__name");
     const todoDate = this._todoElement.querySelector(".todo__date");
-    const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
     todoNameEl.textContent = this._data.name;
-    if (this._data.date) {
+    // Guard against invalid dates
+    if (this._data.date instanceof Date && !isNaN(this._data.date)) {
       todoDate.textContent = this._data.date.toLocaleDateString();
+    } else {
+      todoDate.textContent = "";
     }
 
     this._generateCheckboxEl();
