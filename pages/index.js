@@ -78,13 +78,10 @@ const section = new Section({
 const popupWithForm = new PopupWithForm(addTodoPopupSelector, (inputValues) => {
   const name = inputValues.name;
   const dateInput = inputValues.date;
-  let date = null;
-  if (dateInput && dateInput.trim()) {
-    const d = new Date(dateInput);
-    if (!isNaN(d)) {
-      d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
-      date = d;
-    }
+  // TripleTen style: check if dateInput has a value before creating the Date
+  const date = dateInput ? new Date(dateInput) : null;
+  if (date) {
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
   }
   const id = uuidv4();
   const todoData = { name, date, id, completed: false };

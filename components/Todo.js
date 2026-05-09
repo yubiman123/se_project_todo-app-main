@@ -39,8 +39,8 @@ class Todo {
     const todoDate = this._todoElement.querySelector(".todo__date");
 
     todoNameEl.textContent = this._data.name;
-    // Guard against invalid dates
-    if (this._data.date instanceof Date && !isNaN(this._data.date)) {
+    // Instead of directly setting the date text, check first:
+    if (this._data.date) {
       todoDate.textContent = this._data.date.toLocaleDateString();
     } else {
       todoDate.textContent = "";
