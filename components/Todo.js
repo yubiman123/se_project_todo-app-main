@@ -12,12 +12,12 @@ class Todo {
   _setEventListeners() {
     this._todoCheckboxEl.addEventListener("change", () => {
       this._data.completed = !this._data.completed;
-      this._handleToggle();
+      this._handleToggle(this._data.completed);
     });
 
     const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     todoDeleteBtn.addEventListener("click", () => {
-      this._handleDelete(this._data.id);
+      this._handleDelete(this._data.id, this._data.completed);
     });
   }
 
