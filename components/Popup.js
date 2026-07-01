@@ -31,10 +31,6 @@ class Popup {
 
   setEventListeners() {
     this._popup.addEventListener("mousedown", this._handleOverlayClose);
-    const closeButton = this._popup.querySelector(".popup__close");
-    if (closeButton) {
-      closeButton.addEventListener("click", () => this.close());
-    }
   }
 }
 

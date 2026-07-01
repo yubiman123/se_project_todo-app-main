@@ -15,7 +15,6 @@ const counterSelector = ".counter__text";
 const todoCounter = new TodoCounter(counterSelector, initialTodos);
 
 const handleDelete = (id, wasCompleted) => {
-  const todoElement = document.querySelector(`#todo-${id}`).closest(".todo");
   if (!todoElement) {
     return;
   }
@@ -30,11 +29,15 @@ const handleToggle = (isCompleted) => {
   todoCounter.updateCompleted(isCompleted);
 };
 
+const renderTodo = (todoData) => {
+  const todo = new Todo(todoData, "#todo-template", handleDelete, handleToggle);
+  section.addItem(todo.getView());
+};
+
 const section = new Section({
   items: initialTodos,
   renderer: (item) => {
-    const todo = new Todo(item, "#todo-template", handleDelete, handleToggle);
-    section.addItem(todo.getView());
+    renderTodo(item);
   },
   containerSelector: todosListSelector,
 });
@@ -50,13 +53,7 @@ const popupWithForm = new PopupWithForms(
     }
     const id = uuidv4();
     const todoData = { name, date, id, completed: false };
-    const todo = new Todo(
-      todoData,
-      "#todo-template",
-      handleDelete,
-      handleToggle,
-    );
-    section.addItem(todo.getView());
+    renderTodo(todoData);
     todoCounter.updateTotal(true);
     newTodoValidator.resetValidation();
     popupWithForm.close();
