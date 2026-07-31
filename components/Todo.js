@@ -17,7 +17,11 @@ class Todo {
 
     const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     todoDeleteBtn.addEventListener("click", () => {
-      this._handleDelete(this._data.id, this._data.completed);
+      this._handleDelete(
+        this._todoElement,
+        this._data.id,
+        this._data.completed,
+      );
     });
   }
 
@@ -39,7 +43,6 @@ class Todo {
     const todoDate = this._todoElement.querySelector(".todo__date");
 
     todoNameEl.textContent = this._data.name;
-    // Instead of directly setting the date text, check first:
     if (this._data.date) {
       todoDate.textContent = this._data.date.toLocaleDateString();
     } else {

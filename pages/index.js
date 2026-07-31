@@ -1,10 +1,17 @@
-import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import PopupWithForms from "../components/PopupWithForms.js";
 import Section from "../components/Section.js";
 import TodoCounter from "../components/TodoCounter.js";
+
+const createTodoId = () => {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (char) => {
+    const randomValue = (Math.random() * 16) | 0;
+    const value = char === "x" ? randomValue : (randomValue & 0x3) | 0x8;
+    return value.toString(16);
+  });
+};
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupSelector = "#add-todo-popup";
@@ -14,7 +21,7 @@ const counterSelector = ".counter__text";
 
 const todoCounter = new TodoCounter(counterSelector, initialTodos);
 
-const handleDelete = (id, wasCompleted) => {
+const handleDelete = (todoElement, todoId, wasCompleted) => {
   if (!todoElement) {
     return;
   }
@@ -51,7 +58,7 @@ const popupWithForm = new PopupWithForms(
     if (date && !isNaN(date)) {
       date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
     }
-    const id = uuidv4();
+    const id = createTodoId();
     const todoData = { name, date, id, completed: false };
     renderTodo(todoData);
     todoCounter.updateTotal(true);
